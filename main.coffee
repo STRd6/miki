@@ -9,25 +9,19 @@ basePath = []
 
 # Attach a handler to document to intercept link clicks and
 # render relative files and update the current path.
-document.addEventListener "click", (e) ->
+window.addEventListener "click", (e) ->
   target = e.target
+
   if target.nodeName is "A"
     href = target.getAttribute "href"
-    
-    console.log "Click", target
 
     unless absolute.test(href)
       e.preventDefault()
-      # TODO: Load relative file
-      console.log href
 
       path = normalizePath(href.split('/'), basePath)
 
-      console.log path
-
       self.invokeRemote "system", "readFile", path.join('/')
       .then (file) ->
-        console.log "LOADING", file
         self.loadFile file
       .catch (e) ->
         console.error e
@@ -57,7 +51,7 @@ self = global.miki =
   # We need to implement saveState and restoreState if we want to be able to
   # persist across popping the window in and out.
   saveState: ->
-    
+
 
   restoreState: (state) ->
     # TODO: Need to set currentPath
@@ -77,9 +71,6 @@ self.invokeRemote "childLoaded"
 # whimsy-file may return the link to the file data as a URL so we need to be
 # able to download the contents
 Ajax = require "./lib/ajax"
-
-window.addEventListener "mousedown", ->
-  self.focus()
 
 processDropAsText = (e) ->
   jsonText = e.dataTransfer.getData("application/whimsy-file+json")
