@@ -1,0 +1,6 @@
+version: "0.0.1"
+remoteDependencies: [
+  "https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"
+]
+dependencies:
+  postmaster: "distri/postmaster:v0.3.1"
