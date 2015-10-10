@@ -22,6 +22,7 @@ document.addEventListener "click", (e) ->
       path = normalizePath(href.split('/'), basePath)
       self.invokeRemote "system", "readFile", path.join('/')
       .then (file) ->
+        console.log "LOADING", file
         self.loadFile file
       .catch (e) ->
         console.error e
@@ -42,8 +43,6 @@ self = global.miki =
     document.body.innerHTML = html
 
   loadFile: (file) ->
-    console.log file
-
     readAsText(file)
     .then (text) ->
       self.render(text)
