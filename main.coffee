@@ -16,6 +16,13 @@ document.addEventListener "click", (e) ->
       # TODO: Load relative file
       console.log href
 
+      path = "test.md"
+      self.invokeRemote "system", "readFile", path
+      .then (file) ->
+        self.loadFile file
+      .catch (e) ->
+        console.error e
+
 render = (markdownText) ->
   html = marked markdownText
 
