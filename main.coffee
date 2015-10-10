@@ -20,6 +20,9 @@ document.addEventListener "click", (e) ->
       console.log href
 
       path = normalizePath(href.split('/'), basePath)
+
+      console.log path
+
       self.invokeRemote "system", "readFile", path.join('/')
       .then (file) ->
         console.log "LOADING", file
