@@ -13,6 +13,8 @@ document.addEventListener "click", (e) ->
   target = e.target
   if target.nodeName is "A"
     href = target.getAttribute "href"
+    
+    console.log "Click", target
 
     unless absolute.test(href)
       e.preventDefault()
@@ -48,6 +50,8 @@ self = global.miki =
   loadFile: (file) ->
     readAsText(file)
     .then (text) ->
+      basePath = file.name.split('/').slice(0, -1)
+
       self.render(text)
 
   # We need to implement saveState and restoreState if we want to be able to
