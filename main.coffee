@@ -4,6 +4,9 @@ absolute = new RegExp('^[a-z]+:|^//', 'i')
 
 # TODO: We'll want to load the file, then load a relative .css and .js
 
+basePath = []
+{normalizePath} = require "./lib/path"
+
 # Attach a handler to document to intercept link clicks and
 # render relative files and update the current path.
 document.addEventListener "click", (e) ->
@@ -16,8 +19,8 @@ document.addEventListener "click", (e) ->
       # TODO: Load relative file
       console.log href
 
-      path = "test.md"
-      self.invokeRemote "system", "readFile", path
+      path = normalizePath(href.split('/'), basePath)
+      self.invokeRemote "system", "readFile", path.join('/')
       .then (file) ->
         self.loadFile file
       .catch (e) ->
@@ -39,6 +42,8 @@ readAsText = (blob) ->
 
 self =
   loadFile: (file) ->
+    console.log file
+
     readAsText(file)
     .then (text) ->
       render(text)
