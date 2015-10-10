@@ -26,11 +26,6 @@ document.addEventListener "click", (e) ->
       .catch (e) ->
         console.error e
 
-render = (markdownText) ->
-  html = marked markdownText
-
-  document.body.innerHTML = html
-
 readAsText = (blob) ->
   new Promise (resolve, reject) ->
     reader = new FileReader()
@@ -40,13 +35,18 @@ readAsText = (blob) ->
     reader.onerror = reject
     reader.readAsText(blob)
 
-self =
+self = global.miki =
+  render: (markdownText) ->
+    html = marked markdownText
+
+    document.body.innerHTML = html
+
   loadFile: (file) ->
     console.log file
 
     readAsText(file)
     .then (text) ->
-      render(text)
+      self.render(text)
 
   # We need to implement saveState and restoreState if we want to be able to
   # persist across popping the window in and out.
@@ -94,4 +94,4 @@ processDropAsText = (e) ->
 dropReader = require "./lib/drop"
 dropReader document, (e) ->
   processDropAsText(e)
-  .then render
+  .then self.render
