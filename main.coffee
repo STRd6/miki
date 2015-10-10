@@ -1,8 +1,20 @@
 global.markdown = marked
 
+absolute = new RegExp('^[a-z]+:|^//', 'i')
+
 # TODO: We'll want to load the file, then load a relative .css and .js
-# We'll want to attach a handler to document to intercept link clicks and
+
+# Attach a handler to document to intercept link clicks and
 # render relative files and update the current path.
+document.addEventListener "click", (e) ->
+  target = e.target
+  if target.nodeName is "A"
+    href = target.getAttribute "href"
+
+    unless absolute.test(href)
+      e.preventDefault()
+      # TODO: Load relative file
+      console.log href
 
 render = (markdownText) ->
   html = marked markdownText
